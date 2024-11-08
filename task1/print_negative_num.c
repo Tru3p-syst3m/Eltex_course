@@ -5,7 +5,7 @@ int main(){
     scanf("%d", &num);
 
     if(num > 0){
-        printf("The num must be negative. Retry.\n");
+        printf("The num must be negative or bigger. Retry.\n");
         return 0;
     } else if(num == 0){
         printf("number in binary form: 0\n");

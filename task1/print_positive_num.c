@@ -1,12 +1,11 @@
 #include <stdio.h>
-// #include <limits.h>
 int main(){
     int num, size = 0;
     printf("Type num: ");
     scanf("%d", &num);
 
     if(num < 0){
-        printf("The num must be positive. Retry.\n");
+        printf("The num must be positive or smaller. Retry.\n");
         return 0;
     } else if(num == 0){
         printf("number in binary form: 0\n");
