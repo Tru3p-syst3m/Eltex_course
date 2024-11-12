@@ -2,7 +2,7 @@ SOURCES = array_revers.c half_positive_matrix.c simple_matrix.c snail_matrix.c
 EXECUTABLES = array_revers half_positive_matrix simple_matrix snail_matrix
 
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(EXECUTABLES)
 
