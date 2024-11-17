@@ -1,11 +1,11 @@
-EXECUTABLES = array&pointer byte_change change_result substr
+EXECUTABLES = array_and_pointer byte_change change_result substr
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(EXECUTABLES)
 
-array&pointer: array&pointer.c
+array_and_pointer: array_and_pointer.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 byte_change: byte_change.c
