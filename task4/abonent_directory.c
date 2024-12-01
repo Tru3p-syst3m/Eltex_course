@@ -79,7 +79,6 @@ int main() {
             printf("Введите имя(не более 9-ти симовлов): ");
             scanf("%9s", data);
             data[9] = '\0';
-            printf("data: %s\n", data);
             copy_data(data, dir.directory[dir.capacity].name);
             clear_input_buffer();
             
