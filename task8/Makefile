@@ -27,7 +27,9 @@ LIBRARY = $(BUILD_DIR)/libcalc.so
 # Цель по умолчанию
 all: $(BIN_DIR)/calc
 
-# Правило для создания динамической библиотеки
+$(BIN_DIR)/calc: $(MAIN_OBJ) $(LIBRARY) $(SRC_DIR)/clear_buff.c
+	$(CC) $(CFLAGS) $^ -o $@ -L$(BUILD_DIR) -lcalc -I$(INCLUDE_DIR) -Wl,-rpath,$(BUILD_DIR)
+
 $(LIBRARY): $(LIB_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
 
@@ -38,12 +40,6 @@ $(BUILD_DIR)/%.o: $(LIB_DIR)/%.c
 # Правило для компиляции главного файла программы в объектный файл
 $(MAIN_OBJ): $(MAIN_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCLUDE_DIR)
-
-# Линковка программы с библиотекой
-$(BIN_DIR)/calc: $(MAIN_OBJ) $(SRC_DIR)/clear_buff.c
-	$(CC) $(CFLAGS) $^ -o $@ -L$(BUILD_DIR) -lcalc -I$(INCLUDE_DIR) -Wl,-rpath,$(BUILD_DIR)
-
-# Чистка всех файлов сборки
 clean:
 	rm -rf $(BUILD_DIR)/* $(BIN_DIR)/*
 
