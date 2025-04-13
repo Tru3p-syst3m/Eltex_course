@@ -6,18 +6,15 @@
 #include <signal.h>
 
 void run_child(char **args) {
-    // Игнорируем SIGTTOU на время смены группы
     signal(SIGTTOU, SIG_IGN);
 
-    // Создаём новую группу и забираем терминал
     setpgid(0, 0);
     if (tcsetpgrp(STDIN_FILENO, getpgid(0)) == -1) {
         perror("tcsetpgrp(child) failed");
         exit(1);
     }
-    signal(SIGTTOU, SIG_DFL);  // Восстанавливаем обработчик
+    signal(SIGTTOU, SIG_DFL);
 
-    // Запускаем программу
     execvp(args[0], args);
     perror("execvp failed");
     exit(1);
@@ -34,7 +31,7 @@ char **parse_command(char *input) {
         exit(EXIT_FAILURE);
     }
 
-    token = strtok(input, " \t\r\n\a");  // Разделители: пробел, табуляция, перевод строки и т.д.
+    token = strtok(input, " \t\r\n\a");
     while (token != NULL) {
         tokens[position] = token;
         position++;
@@ -50,7 +47,7 @@ char **parse_command(char *input) {
 
         token = strtok(NULL, " \t\r\n\a");
     }
-    tokens[position] = NULL;  // execvp требует NULL в конце
+    tokens[position] = NULL;
     return tokens;
 }
 
