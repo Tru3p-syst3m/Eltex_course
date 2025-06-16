@@ -46,9 +46,9 @@ int main() {
 void* members_handler(void* mq) {
     struct message msg;
     int mqid = *((int*)mq);
-
     int member_msg_prio = 1;
     data_init(&members);
+    int members_online = members.size;
 
     while(1) {
         if (msgrcv(mqid, &msg, sizeof(msg.mtext), member_msg_prio, 0) == -1) {
@@ -66,22 +66,25 @@ void* members_handler(void* mq) {
         if(strcmp(token, "0") == 0) {
             token = strtok(NULL, " ");
             token = strtok(NULL, " ");
-            data_delete(&members, atoi(token));
+            members.data[data_find(&members, atoi(token))].is_online = 0;
+            members_online--;
         } else {
             token = strtok(NULL, " ");
             member.line = malloc(strlen(token)+1);
             strcpy(member.line, token);
-            
+            member.is_online = 1;
             token = strtok(NULL, " ");
             member.id = atoi(token);
             shair_database(mqid, member.id);
             data_add(&members, &member);
+            members_online++;
         }
         strcpy(&msg.mtext[0], &str_tmp[0]);
         broadcast(&msg, mqid);
         print_members();
-        if(members.size <= 0) {
+        if(members_online <= 0) {
             pthread_mutex_unlock(&members_mutex);
+            members.size = 0;
             exit_flag = 1;
             break;
         }
@@ -153,9 +156,11 @@ void shair_database(int mqid, int pid) {
     msg.mtype = pid;
     char text[MSGLEN];
     for(int i = 0; i < members.size; i++) {
-        sprintf(&text[0], "1 %s %d", members.data[i].line, members.data[i].id);
-        strcpy(&msg.mtext[0], &text[0]);
-        msgsnd(mqid, &msg, sizeof(msg.mtext), 0);
+        if(members.data[i].is_online) {
+            sprintf(&text[0], "1 %s %d", members.data[i].line, members.data[i].id);
+            strcpy(&msg.mtext[0], &text[0]);
+            msgsnd(mqid, &msg, sizeof(msg.mtext), 0);
+        }
     }
     for(int i = 0; i < messages.size; i++) {
         sprintf(&text[0], "3 %s>%d", messages.data[i].line, messages.data[i].id);
