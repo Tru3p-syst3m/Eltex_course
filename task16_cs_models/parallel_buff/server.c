@@ -71,6 +71,7 @@ int main() {
         if(recvfrom(fd, &buff, BUFF_SIZE, 0, (struct sockaddr*)&client, &size_client) == -1) {
             perror("Recv fail\n");
             data[0].is_ready = data[1].is_ready = data[2].is_ready = -1;
+            sleep(1);
             close(fd);
             exit(EXIT_FAILURE);
         }
@@ -78,6 +79,7 @@ int main() {
         if(strcmp(buff, "kill") == 0) {
             printf("Received a kill message\n");
             data[0].is_ready = data[1].is_ready = data[2].is_ready = -1;
+            sleep(1);
             break;
         }
 
