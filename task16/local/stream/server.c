@@ -12,7 +12,7 @@
 int main() {
     struct sockaddr_un server, client;
     memset(&server, 0, sizeof(server));
-    memset(&server, 0, sizeof(client));
+    memset(&client, 0, sizeof(client));
     server.sun_family = AF_LOCAL;
     strncpy(server.sun_path, SOCKET_PATH, sizeof(server.sun_path) - 1);
     socklen_t size_server = sizeof(server), size_client = sizeof(client);

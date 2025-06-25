@@ -11,7 +11,7 @@
 int main() {
     struct sockaddr_in server, client;
     memset(&server, 0, sizeof(server));
-    memset(&server, 0, sizeof(client));
+    memset(&client, 0, sizeof(client));
     server.sin_family = AF_INET;
     server.sin_port = htons(SOCKET_PORT);
     server.sin_addr.s_addr = INADDR_ANY;
