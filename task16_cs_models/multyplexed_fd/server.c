@@ -115,6 +115,11 @@ int main() {
                 memset(&client, 0, size_client_tcp);
 
                 int client_fd = accept(fd_tcp, (struct sockaddr*)&client, &size_client_tcp);
+                /*
+                    тут можно было бы добавлять дискрипторы клиентов в массив и множество,
+                    а после этого ифа проверять их на готовность чтения и записи,
+                    но в задаче нет продолжительного соединения. так что я этого не делал:)
+                */
                 if(client_fd == -1) {
                     perror("TCP accept fail\n");
                     close(fd_udp);
