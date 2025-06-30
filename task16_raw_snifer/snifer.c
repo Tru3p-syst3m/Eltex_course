@@ -17,7 +17,7 @@ void print_ip(uint32_t ip) {
     bytes[1] = (ip >> 8) & 0xFF;
     bytes[2] = (ip >> 16) & 0xFF;
     bytes[3] = (ip >> 24) & 0xFF;
-    printf("snifed dns pack from %d.%d.%d.%d\n", bytes[0], bytes[1], bytes[2], bytes[3]);
+    printf("snifed dns pack from %d.%d.%d.%d\n", bytes[3], bytes[2], bytes[1], bytes[0]);
 }
 
 int main() {
@@ -35,13 +35,14 @@ int main() {
             perror("recv");
             exit(EXIT_FAILURE);
         }
+
         struct iphdr* ip = (struct iphdr*) buff;
-        if(ip->protocol != IPPROTO_UDP && ip->protocol != IPPROTO_TCP) continue;
+        if(ip->protocol != IPPROTO_UDP) continue;
 
         unsigned int ip_len = ip->ihl * 4;
 
         struct udphdr* udp = (struct udphdr*) (buff + ip_len);
-        if (ntohs(udp->dest) != 53) continue;
+        if (ntohs(udp->source) != 53) continue;
         
         print_ip(ntohl(ip->saddr));
     }
