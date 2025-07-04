@@ -18,12 +18,12 @@
 
 #pragma pack(push, 1)
 typedef struct {
-    uint8_t  dest_mac[6];    // MAC получателя
-    uint8_t  src_mac[6];     // MAC отправителя
-    uint16_t ether_type;     // 0x0800 для IPv4
-    struct iphdr ip;         // IP-заголовок
-    struct udphdr udp;       // UDP-заголовок
-    char data[BUFF_SIZE];    // Полезная нагрузка
+    uint8_t  dest_mac[6];
+    uint8_t  src_mac[6];
+    uint16_t ether_type;
+    struct iphdr ip;
+    struct udphdr udp;
+    char data[BUFF_SIZE];
 } EthernetPacket;
 #pragma pack(pop)
 
